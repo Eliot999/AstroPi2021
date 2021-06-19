@@ -86,26 +86,14 @@ def main():
     except :
         sea_per = 0
     print(sky_per,terre_per,sea_per)
-    #os.mkdir("treated_images")
     albedo = sea_per*0.10+terre_per*0.25+sky_per*0.70
     albedo = (albedo/100)*1.30
     print(albedo)
-    """
-    for i in result_images[1]:
-        print(i)
-        #imageio.imwrite("treated_images",i)
-    """
+
     
-    """
     for u in range(len(result_images)):
         imageio.imsave(f"treated_images/image{u}.png", result_images[u][1])
-    """
-    """
-    matplotlib.pyplot.imshow(result_images[10][2])
-    matplotlib.pyplot.imshow(result_images[10][3])
-    matplotlib.pyplot.imshow(result_images[10][4])
-    matplotlib.pyplot.imshow(result_images[16][1])
-    """
+    
 
 if __name__ == '__main__':
 
