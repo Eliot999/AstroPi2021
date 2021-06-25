@@ -7,19 +7,18 @@ import matplotlib
 
 def analyze_image(image_path):
     astropi = imageio.imread(image_path)
-    masque_rouge = astropi[:, :, 0] > 130
-    masque_vert = astropi[:, :, 1] > 130
-    masque_bleu = astropi[:, :, 2] > 130
+    masque_rouge = astropi[:, :, 0] > 135
+    masque_vert = astropi[:, :, 1] > 135
+    masque_bleu = astropi[:, :, 2] > 135
     masque_ocean_rouge = np.logical_and(astropi[:, :, 0]> 5, astropi[:, :, 0] <85)
     masque_ocean_vert = np.logical_and(astropi[:, :, 1]> 20, astropi[:, :, 1] <85)
     masque_ocean_bleu = np.logical_and(astropi[:, :, 2]> 20, astropi[:, :, 2] <85)
 
-    masque_terre_rouge = np.logical_and(astropi[:, :, 0]>85, astropi[:, :, 0] <130)
-    masque_terre_vert = np.logical_and(astropi[:, :, 1]> 85, astropi[:, :, 1] <130)
-    masque_terre_bleu = np.logical_and(astropi[:, :, 2]> 85, astropi[:, :, 2] <130)
+    masque_terre_rouge = np.logical_and(astropi[:, :, 0]>85, astropi[:, :, 0] <135)
+    masque_terre_vert = np.logical_and(astropi[:, :, 1]> 85, astropi[:, :, 1] <135)
+    masque_terre_bleu = np.logical_and(astropi[:, :, 2]> 85, astropi[:, :, 2] <135)
     masque_final_sky = np.logical_and(masque_rouge, masque_vert, masque_bleu)
     masque_final_sea = np.logical_and(masque_ocean_rouge, masque_ocean_vert, masque_ocean_bleu)
-    # peut etre a utiliser masque_final_foret = np.logical_and(masque_foret_rouge, masque_foret_vert, masque_foret_bleu)
     masque_final_terre = np.logical_and(masque_terre_rouge, masque_terre_vert, masque_terre_bleu)
     astropi[masque_final_terre] = [0, 255, 0]
     astropi[masque_final_sea] = [0, 0, 255]
@@ -87,13 +86,14 @@ def main():
         sea_per = 0
     print(sky_per,terre_per,sea_per)
     albedo = sea_per*0.10+terre_per*0.25+sky_per*0.70
-    albedo = (albedo/100)*1.30
+    albedo = (albedo/100)*1.43
     print(albedo)
 
-    
+    file_percentages_final = open("treated_images/percentage.txt","w")
     for u in range(len(result_images)):
         imageio.imsave(f"treated_images/image{u}.png", result_images[u][1])
-    
+        file_percentages_final.write(f"image {u}, sky : {result_images[u][7]}, sea : {result_images[u][5]}, Land : {result_images[u][6]}\n")
+    file_percentages_final.close()
 
 if __name__ == '__main__':
 
